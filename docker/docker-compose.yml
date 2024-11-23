@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  redis-master:
+    image: redis:latest
+    container_name: redis-master
+    hostname: redis-master
+    networks:
+      - redis-cluster
+    ports:
+      - "6379:6379"
+    command: ["redis-server"]
+
+  redis-slave:
+    image: redis:latest
+    container_name: redis-slave
+    hostname: redis-slave
+    networks:
+      - redis-cluster
+    ports:
+      - "6380:6379"
+    command: ["redis-server", "--replicaof", "redis-master", "6379"]
+
+  redis-sentinel:
+    image: redis:latest
+    container_name: redis-sentinel
+    hostname: redis-sentinel
+    networks:
+      - redis-cluster
+    ports:
+      - "26379:26379"
+    volumes:
+      - ./sentinel.conf:/etc/redis/sentinel.conf
+    command: ["redis-sentinel", "/etc/redis/sentinel.conf"]
+
+networks:
+  redis-cluster:
+    driver: bridge
