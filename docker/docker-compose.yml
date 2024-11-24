@@ -19,6 +19,8 @@ services: # 컨테이너 설정 부분
     ports:
       - "6380:6379" # 호스트의 6380 포트를 컨테이너의 6379 포트와 매핑합니다. Master와 구분하기 위해 다른 포트를 사용.
     command: ["--replicaof", "redis-master", "6379"] # Redis Slave 설정으로 Master(redis-master:6379)를 지정.
+    depends_on:
+      - redis-master
 
   redis-sentinel:
     image: redis:latest
@@ -39,4 +41,5 @@ services: # 컨테이너 설정 부분
 
 networks: # 서비스 간 통신을 위한 네트워크.
   redis-cluster:
+    name : redis-cluster
     driver: bridge # 네트워크 드라이버로 bridge를 사용. Docker 컨테이너 간의 통신 시 사용
