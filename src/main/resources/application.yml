@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: default
+
+server:
+  port: 8088  # 기본 포트 번호(로컬 포트 중복 방지를 위해 임시 설정)
+
+aws:
+  iot:
+    endpoint: a14g8w548ye8nq-ats.iot.us-east-2.amazonaws.com
+    clientId: iotconsole-88bda2c5-75ba-48bb-bc6f-0468baa51f28
+    certFile: classpath:/certificates/ca32f584a8f6115a55b8f5392369738ed77c5cea3ac05d278f7a8144b78192dc-certificate.pem.crt
+    privateKeyFile: classpath:/certificates/ca32f584a8f6115a55b8f5392369738ed77c5cea3ac05d278f7a8144b78192dc-private.pem.key
+    rootCaFile: classpath:/certificates/AmazonRootCA1.pem
+    
+---
+# 개발 프로파일 (dev) 설정
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+logging:
+  level:
+    root: DEBUG  # 개발 환경에서는 DEBUG 로그 레벨로 설정
+
+server:
+  port: 8080
+
+---
+# 프로덕션 프로파일 (prd) 설정
+spring:
+  config:
+    activate:
+      on-profile: prd
+
+logging:
+  level:
+    root: INFO  # 프로덕션 환경에서는 INFO 로그 레벨로 설정
+
+server:
+  port: 8080
