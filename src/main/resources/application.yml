@@ -4,8 +4,10 @@ spring:
   h2:
     console:
       enabled: true
+      path: /h2-console
   datasource:
-    url: jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT=1
+    url: jdbc:h2:mem:testdb
+#    url: jdbc:h2:mem:testdb;TRACE_LEVEL_SYSTEM_OUT=1
     driverClassName: org.h2.Driver
     username: sa
     password:
@@ -13,8 +15,8 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-#      ddl-auto: none
       ddl-auto: create
+#      ddl-auto: none # sql 자동 실행 시 none 처
     properties:
       hibernate:
         format_sql: true
@@ -24,8 +26,8 @@ server:
 
 logging:
   level:
-    org.springframework.jdbc.core: DEBUG
-    
+    org.sprin리framework.jdbc.core: DEBUG
+
 ---
 # 개발 프로파일 (dev) 설정
 spring:
