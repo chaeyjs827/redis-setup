@@ -20,13 +20,20 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  redis:
+    master:
+      host: localhost
+      port: 6379
+    slaves:
+      - host: localhost
+        port: 6380
 
 server:
   port: 8088  # 기본 포트 번호(로컬 포트 중복 방지를 위해 임시 설정)
 
 logging:
   level:
-    org.sprin리framework.jdbc.core: DEBUG
+    org.springframework.jdbc.core: DEBUG
 
 ---
 # 개발 프로파일 (dev) 설정
