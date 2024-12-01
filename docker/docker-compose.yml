@@ -1,0 +1,45 @@
+version: '3.8'  # docker compose 버전(docker engine 버전별로 다름)
+
+services: # 컨테이너 설정 부분
+  redis-master:
+    image: redis:latest # 사용할 도커 이미지(최신 버전 사용, 버전 직접 설정 가능)
+    container_name: redis-master # 컨테이너 이름
+    hostname: redis-master # 컨테이너 내부 호스트 이름(컨테이너 간 통신 시 사용)
+    networks:
+      - redis-cluster # 네트워크 설정(redis-cluster 네트워크 연결)
+    ports:
+      - "6379:6379"
+
+  redis-slave:
+    image: redis:latest
+    container_name: redis-slave
+    hostname: redis-slave
+    networks:
+      - redis-cluster
+    ports:
+      - "6380:6379" # 호스트의 6380 포트를 컨테이너의 6379 포트와 매핑합니다. Master와 구분하기 위해 다른 포트를 사용.
+    command: ["--replicaof", "redis-master", "6379"] # Redis Slave 설정으로 Master(redis-master:6379)를 지정.
+    depends_on:
+      - redis-master
+
+  redis-sentinel:
+    image: redis:latest
+    container_name: redis-sentinel
+    hostname: redis-sentinel
+    networks:
+      - redis-cluster
+    ports:
+      - "26379:26379"
+    volumes:
+      - ./redis/sentinel.conf:/etc/redis/sentinel.conf
+      # 왼쪽 : 호스트 시스템의 sentinel.conf 파일 경로. (./sentinel.conf)
+      # 오른쪽 : 컨테이너 내부에서 Sentinel 설정 파일이 위치할 경로. (/etc/redis/sentinel.conf)
+    command: ["redis-sentinel", "/etc/redis/sentinel.conf"] # Redis Sentinel 실행 명령어. /etc/redis/sentinel.conf를 Sentinel 설정으로 사용.
+    depends_on:
+      - redis-master
+      - redis-slave
+
+networks: # 서비스 간 통신을 위한 네트워크.
+  redis-cluster:
+    name : redis-cluster
+    driver: bridge # 네트워크 드라이버로 bridge를 사용. Docker 컨테이너 간의 통신 시 사용

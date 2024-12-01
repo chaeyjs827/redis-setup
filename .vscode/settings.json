@@ -1,0 +1,10 @@
+{
+    "java.jdt.ls.java.home": "C:\\Program Files\\Java\\zulu_jdk_17.0.13",
+    "java.configuration.runtimes": [
+      {
+        "name": "JavaSE-17",
+        "path": "C:\\Program Files\\Java\\zulu_jdk_17.0.13"
+      }
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+  }
