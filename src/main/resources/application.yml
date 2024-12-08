@@ -29,7 +29,7 @@ spring:
         port: 6380
 
 server:
-  port: 8088  # 기본 포트 번호(로컬 포트 중복 방지를 위해 임시 설정)
+  port: 8080
 
 logging:
   level:
